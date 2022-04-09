@@ -28,5 +28,3 @@ class SoundGenerator:
             #append signal to "signals"
             signals.append(signal)
         return signals
-
-

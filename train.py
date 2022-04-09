@@ -1,4 +1,3 @@
-from json import load
 import os
 import numpy as np
 from tensorflow.keras.datasets import mnist
@@ -35,8 +34,3 @@ def train(x_train, learning_rate, batch_size, epochs):
     autoencoder.compile(learning_rate)
     autoencoder.train(x_train, batch_size, epochs)
     return autoencoder
-
-if __name__ == "__main__":
-    x_train = load_music(SPECTROGRAMS_PATH)
-    autoencoder = train(x_train, LEARNING_RATE, BATCH_SIZE, EPOCHS)
-    autoencoder.save("model")
