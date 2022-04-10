@@ -1,12 +1,5 @@
 import os
 import numpy as np
-from tensorflow.keras.datasets import mnist
-from auto_encoder import Autoencoder
-
-LEARNING_RATE = 0.0005
-BATCH_SIZE = 64
-EPOCHS = 100
-SPECTROGRAMS_PATH = "Sample_data/fma_small/spectrograms"
 
 def load_music(spectrograms_path):
     x_train = []

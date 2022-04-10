@@ -173,30 +173,3 @@ class PreprocessingPipeline:
             "min": min_val,
             "max": max_val
         }
-
-if __name__ == "__main__":
-
-    FRAME_SIZE = 2048
-    HOP_LENGTH = 512
-    DURATION = 10
-    SAMPLE_RATE = 22050
-    MONO = True
-
-    FILES_DIR = "Sample_data/fma_small/000/"
-    SPECTROGRAMS_SAVE_DIR = "Sample_data/fma_small/spectrograms/"
-    MIN_MAX_VALUES_SAVE_DIR = "Sample_data/fma_small/"
-
-    loader = Loader(SAMPLE_RATE, DURATION, MONO)
-    padder = Padder()
-    log_spectrogram_extractor = LogSpectrogramExtractor(FRAME_SIZE, HOP_LENGTH)
-    min_max_normaliser = MinMaxNormaliser(0, 1)
-    saver = Saver(SPECTROGRAMS_SAVE_DIR, MIN_MAX_VALUES_SAVE_DIR)
-
-    preprocessing_pipeline = PreprocessingPipeline()
-    preprocessing_pipeline.loader = loader
-    preprocessing_pipeline.padder = padder
-    preprocessing_pipeline.extractor = log_spectrogram_extractor
-    preprocessing_pipeline.normaliser = min_max_normaliser
-    preprocessing_pipeline.saver = saver
-
-    preprocessing_pipeline.process(FILES_DIR)
