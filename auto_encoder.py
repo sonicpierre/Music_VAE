@@ -232,3 +232,5 @@ class Autoencoder:
 
         x = tf.keras.layers.Lambda(sample_point_from_normal_distribution, name="encoder_output")([self.mu, self.log_variance])
         return x
+
+
