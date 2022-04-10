@@ -12,18 +12,3 @@ def load_music(spectrograms_path):
     x_train = x_train[..., np.newaxis]
     
     return x_train
-
-
-
-def train(x_train, learning_rate, batch_size, epochs):
-    autoencoder = Autoencoder(
-        input_shape=(256, 431, 1),
-        conv_filters=(512, 256, 128, 64, 32),
-        conv_kernels=(3,3,3,3,3),
-        conv_strides=(2,2,2,2, (2,1)),
-        latent_space_dim=128
-    )
-    autoencoder.summary()
-    autoencoder.compile(learning_rate)
-    autoencoder.train(x_train, batch_size, epochs)
-    return autoencoder
