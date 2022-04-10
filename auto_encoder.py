@@ -147,7 +147,7 @@ class Autoencoder:
 
     def _add_conv_transpose_layers(self, x):
         """Add conv transpose blocks."""
-        for layer_index in reversed(range(self._num_conv_layers)):
+        for layer_index in reversed(1, range(self._num_conv_layers)):
             x = self._add_conv_transpose_layer(layer_index, x)
         return x
     
