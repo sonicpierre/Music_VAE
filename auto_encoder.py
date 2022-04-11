@@ -21,7 +21,7 @@ class Autoencoder:
         self.conv_kernels = conv_kernels # [3,5,3]
         self.conv_strides = conv_strides # [1,2,2]
         self.latent_space_dim = latent_space_dim # 2
-        self.reconstruction_loss_weight = 1000000
+        self.reconstruction_loss_weight = 100000
 
         self.encoder = None
         self.decoder = None
@@ -155,10 +155,10 @@ class Autoencoder:
             kernel_size = self.conv_kernels[layer_index],
             strides = self.conv_strides[layer_index],
             padding = "same",
+            activation = "selu",
             name=f"decoder_conv_transpose_layer_{layer_num}"
         )
         x = conv_transpose_layer(x)
-        x = ReLU(name=f"decoder_relu_{layer_num}")(x)
         x = BatchNormalization(name =f"decoder_bn_{layer_num}")(x)
         return x
 
@@ -204,11 +204,11 @@ class Autoencoder:
             kernel_size = self.conv_kernels[layer_index],
             strides = self.conv_strides[layer_index],
             padding = "same",
+            activation = "selu",
             name = f"encoder_conv_layer_{layer_index + 1}"
         )
 
         x = conv_layer(x)
-        x = ReLU(name = f"encoder_relu_{layer_number}")(x)
         x = BatchNormalization(name=f"encoder_bn_{layer_number}")(x)
         return x
     
