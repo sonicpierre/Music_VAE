@@ -1,6 +1,5 @@
 import librosa
 from torch import istft
-from preprocess import MinMaxNormaliser
 
 
 class SoundGenerator:
