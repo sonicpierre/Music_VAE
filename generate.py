@@ -1,9 +1,7 @@
 import os
 import pickle
-
 import numpy as np
 import soundfile as sf
-
 from soundgenerator import SoundGenerator
 from auto_encoder import Autoencoder
 from train import SPECTROGRAMS_PATH
