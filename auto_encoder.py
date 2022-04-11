@@ -45,7 +45,8 @@ class Autoencoder:
         self.model.compile(optimizer = optimizer, loss = self._calculate_combined_loss, metrics = [self._calculate_reconstruction_loss, self._calculate_kl_loss])
     
     def train(self, x_train, batch_size, num_epochs):
-        self.model.fit(x_train, x_train, batch_size=batch_size, epochs=num_epochs,shuffle=True)
+        history = self.model.fit(x_train, x_train, batch_size=batch_size, epochs=num_epochs,shuffle=True)
+        return history
     
     def save(self, save_folder="."):
         self._create_folder_if_it_doesnt_exist(save_folder)
