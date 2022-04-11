@@ -44,6 +44,7 @@ def reconstruct_chunks(chunks,exporting_dir,name,padding = 300):
         normalized_chunk = match_target_amplitude(audio_chunk, -20.0)
         # Export the audio chunk with new bitrate.
         #print(exporting_dir + "Exporting chunk{0}.mp3.".format(i))
+        normalized_chunk=+3
         normalized_chunk.export(
             ".//"+ exporting_dir + name +"{0}.wav".format(i),
             bitrate = "192k",
