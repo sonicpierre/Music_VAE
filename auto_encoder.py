@@ -133,8 +133,8 @@ class Autoencoder:
 
     def _add_dense_layer(self, decoder_input):
         num_neurons = np.prod(self._shape_before_bottleneck) # [1, 2, 4] -> 8
-        dense_layer = Dense(num_neurons//2, name="decoder_dense", activation= 'relu')(decoder_input)
-        dense_layer = Dense(num_neurons, name="decoder_dense", activation = 'relu')(dense_layer)
+        dense_layer = Dense(num_neurons//2, name="decoder_dense_1", activation= 'relu')(decoder_input)
+        dense_layer = Dense(num_neurons, name="decoder_dense_2", activation = 'relu')(dense_layer)
         return dense_layer
     
     def _add_reshape_layer(self, dense_layer):
