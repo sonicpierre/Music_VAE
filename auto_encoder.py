@@ -3,7 +3,7 @@ import os
 import pickle
 import tensorflow as tf
 from tensorflow.keras import Model
-from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, Dense, Reshape, Conv2DTranspose, Activation, LeakyReLU, MaxPool2D
+from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, Dense, Reshape, Conv2DTranspose, Activation, LeakyReLU
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam
 
@@ -156,8 +156,7 @@ class Autoencoder:
             name=f"decoder_conv_transpose_layer_{layer_num}"
         )
         x = conv_transpose_layer(x)
-        x = LeakyReLU()(x)
-        x = MaxPool2D()(x)
+        x = LeakyReLU(name=f"decoder_leaky_relu_{layer_num}")(x)
         x = BatchNormalization(name =f"decoder_bn_{layer_num}")(x)
         return x
 
@@ -207,8 +206,7 @@ class Autoencoder:
         )
 
         x = conv_layer(x)
-        x = LeakyReLU()(x)
-        x = MaxPool2D()(x)
+        x = LeakyReLU(name=f"encoder_leakyrelu_{layer_number}")(x)
         x = BatchNormalization(name=f"encoder_bn_{layer_number}")(x)
         return x
     
@@ -216,6 +214,7 @@ class Autoencoder:
         """Flatten data and add bottleneck with Gaussian sampling (Dense layer)."""
         self._shape_before_bottleneck = K.int_shape(x)[1:] # [7, 7, 32]
         x = Flatten()(x)
+        x = Dense(self.latent_space_dim//2, name = "First reduction")
         self.mu = Dense(self.latent_space_dim, name="mu")(x)
         self.log_variance = Dense(self.latent_space_dim, name="log_variance")(x)
 
