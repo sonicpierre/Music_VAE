@@ -3,10 +3,9 @@ import os
 import pickle
 import tensorflow as tf
 from tensorflow.keras import Model
-from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, Dense, Reshape, Conv2DTranspose, Activation
+from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, Dense, Reshape, Conv2DTranspose, Activation, LeakyReLU, MaxPool2D
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.losses import MeanSquaredError
 
 tf.compat.v1.disable_eager_execution()
 
@@ -21,7 +20,7 @@ class Autoencoder:
         self.conv_kernels = conv_kernels # [3,5,3]
         self.conv_strides = conv_strides # [1,2,2]
         self.latent_space_dim = latent_space_dim # 2
-        self.reconstruction_loss_weight = 100000
+        self.reconstruction_loss_weight = 500000
 
         self.encoder = None
         self.decoder = None
@@ -41,7 +40,6 @@ class Autoencoder:
 
     def compile(self, learning_rate=0.0001):
         optimizer = Adam(learning_rate  = learning_rate)
-        mse_loss = MeanSquaredError()
         self.model.compile(optimizer = optimizer, loss = self._calculate_combined_loss, metrics = [self._calculate_reconstruction_loss, self._calculate_kl_loss])
     
     def train(self, x_train, batch_size, num_epochs):
@@ -155,10 +153,11 @@ class Autoencoder:
             kernel_size = self.conv_kernels[layer_index],
             strides = self.conv_strides[layer_index],
             padding = "same",
-            activation = "selu",
             name=f"decoder_conv_transpose_layer_{layer_num}"
         )
         x = conv_transpose_layer(x)
+        x = LeakyReLU()(x)
+        x = MaxPool2D()(x)
         x = BatchNormalization(name =f"decoder_bn_{layer_num}")(x)
         return x
 
@@ -204,11 +203,12 @@ class Autoencoder:
             kernel_size = self.conv_kernels[layer_index],
             strides = self.conv_strides[layer_index],
             padding = "same",
-            activation = "selu",
             name = f"encoder_conv_layer_{layer_index + 1}"
         )
 
         x = conv_layer(x)
+        x = LeakyReLU()(x)
+        x = MaxPool2D()(x)
         x = BatchNormalization(name=f"encoder_bn_{layer_number}")(x)
         return x
     
