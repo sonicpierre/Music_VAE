@@ -214,7 +214,7 @@ class Autoencoder:
         """Flatten data and add bottleneck with Gaussian sampling (Dense layer)."""
         self._shape_before_bottleneck = K.int_shape(x)[1:] # [7, 7, 32]
         x = Flatten()(x)
-        x = Dense(self.latent_space_dim//2, name = "First reduction", activation="relu")(x)
+        x = Dense(self.latent_space_dim//2, name = "first_reduction", activation="relu")(x)
         self.mu = Dense(self.latent_space_dim, name="mu")(x)
         self.log_variance = Dense(self.latent_space_dim, name="log_variance")(x)
 
