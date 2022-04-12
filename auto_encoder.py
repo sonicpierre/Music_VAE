@@ -133,7 +133,8 @@ class Autoencoder:
 
     def _add_dense_layer(self, decoder_input):
         num_neurons = np.prod(self._shape_before_bottleneck) # [1, 2, 4] -> 8
-        dense_layer = Dense(num_neurons, name="decoder_dense")(decoder_input)
+        dense_layer = Dense(num_neurons//2, name="decoder_dense", activation= 'relu')(decoder_input)
+        dense_layer = Dense(num_neurons, name="decoder_dense", activation = 'relu')(dense_layer)
         return dense_layer
     
     def _add_reshape_layer(self, dense_layer):
@@ -214,7 +215,7 @@ class Autoencoder:
         """Flatten data and add bottleneck with Gaussian sampling (Dense layer)."""
         self._shape_before_bottleneck = K.int_shape(x)[1:] # [7, 7, 32]
         x = Flatten()(x)
-        x = Dense(self.latent_space_dim//2, name = "first_reduction", activation="relu")(x)
+        x = Dense(x.shape[0]//2, name = "first_reduction", activation="relu")(x)
         self.mu = Dense(self.latent_space_dim, name="mu")(x)
         self.log_variance = Dense(self.latent_space_dim, name="log_variance")(x)
 
