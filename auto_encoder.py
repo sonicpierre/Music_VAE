@@ -15,15 +15,28 @@ class Autoencoder:
     """
 
     def __init__(self, input_shape, conv_filters, conv_kernels, conv_strides, latent_space_dim):
-        self.input_shape = input_shape # [28,28,1]
-        self.conv_filters = conv_filters # [2,4,8]
-        self.conv_kernels = conv_kernels # [3,5,3]
-        self.conv_strides = conv_strides # [1,2,2]
-        self.latent_space_dim = latent_space_dim # 2
-        self.reconstruction_loss_weight = 500000
+        """
+        Initialisation of the class with the different parameters
+        """
 
+        #Shape of the input spectrogram
+        self.input_shape = input_shape # [1024,256,1]
+        #Shape of the differents convolutials layers
+        self.conv_filters = conv_filters # [2,4,8]
+        #Shape of the kernels
+        self.conv_kernels = conv_kernels # [3,5,3]
+        #The different strides
+        self.conv_strides = conv_strides # [1,2,2]
+        #The size of the latent space
+        self.latent_space_dim = latent_space_dim # 256
+        #Weight given to the reconstruction loss
+        self.reconstruction_loss_weight = 5000000
+
+        #Encoder model part
         self.encoder = None
+        #Decoder model part
         self.decoder = None
+        #The entire model encoder + decoder
         self.model = None
 
         self._num_conv_layers = len(conv_filters)
@@ -32,13 +45,15 @@ class Autoencoder:
 
         self._build()
 
-    #Describe the network
     def summary(self):
+        '''
+        Describe the network with the summary
+        '''
         self.encoder.summary()
         self.decoder.summary()
         self.model.summary()
 
-    def compile(self, learning_rate=0.0001):
+    def compile(self, learning_rate):
         optimizer = Adam(learning_rate  = learning_rate)
         self.model.compile(optimizer = optimizer, loss = self._calculate_combined_loss, metrics = [self._calculate_reconstruction_loss, self._calculate_kl_loss])
     
@@ -93,6 +108,10 @@ class Autoencoder:
             os.mkdir(folder)
 
     def _save_parameters(self, save_folder):
+        """
+        Save the architecture of the model
+        """
+
         parameters = [
             self.input_shape,
             self.conv_filters,
@@ -115,17 +134,32 @@ class Autoencoder:
         self._build_autoencoder()
 
     def _build_autoencoder(self):
+        #Input of the model
         model_input = self._model_input
-        model_output = self.decoder(self.encoder(model_input))
+        #Encoder part
+        model_encoder = self.encoder(model_input)
+        #Decoder part
+        model_output = self.decoder(model_encoder)
+        #Entire model
         self.model = Model(model_input, model_output, name="autoencoder")
 
     
     def _build_decoder(self):
+        """
+        Build the different layers for the decoder
+        """
+
+        #Decoder input
         decoder_input = self._add_decoder_input()
+        #Dense layer before reshaping
         dense_layer = self._add_dense_layer(decoder_input)
+        #Reshape layer to pass from 1D to 2D array
         reshape_layer = self._add_reshape_layer(dense_layer)
+        #Add convolutionnal transpose blocks
         conv_transpose_layer = self._add_conv_transpose_layers(reshape_layer)
+        #Add decoder output
         decoder_output = self._add_decoder_output(conv_transpose_layer)
+        #Model final composition
         self.decoder = Model(decoder_input, decoder_output, name = 'decoder')
     
     def _add_decoder_input(self):
@@ -175,8 +209,11 @@ class Autoencoder:
         output_layer = Activation("sigmoid", name="sigmoid_layer")(x)
         return output_layer
 
-    #Build the different layers of the encoder
     def _build_encoder(self):
+        """
+        Build the different layers of the encoder
+        """
+
         #Input
         encoder_input = self._add_encoder_input()
         #Convolution layer
@@ -195,9 +232,10 @@ class Autoencoder:
             x = self._add_conv_layer(layer_index, x)
         return x
     
-    #Define the convolutionnal block
     def _add_conv_layer(self, layer_index, x):
-
+        """
+        Define the convolutionnal block
+        """
         layer_number = layer_index + 1
         conv_layer = Conv2D(
             filters = self.conv_filters[layer_index],
@@ -230,6 +268,9 @@ class Autoencoder:
 
         x = tf.keras.layers.Lambda(sample_point_from_normal_distribution, name="encoder_output")([self.mu, self.log_variance])
         return x
+
+
+
 
 '''
 if __name__ == "__main__":
