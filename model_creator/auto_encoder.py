@@ -175,7 +175,7 @@ class Autoencoder:
         dense_layer = Dropout(0.3)(dense_layer)
         dense_layer = Dense(self.latent_space_dim * 4, name="decoder_dense_2", activation= 'relu')(dense_layer)
         dense_layer = Dropout(0.3)(dense_layer)
-        dense_layer = Dense(num_neurons, name="decoder_dense_2", activation = 'relu')(dense_layer)
+        dense_layer = Dense(num_neurons, name="decoder_dense_3", activation = 'relu')(dense_layer)
         return dense_layer
     
     def _add_reshape_layer(self, dense_layer):
