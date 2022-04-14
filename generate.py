@@ -4,12 +4,6 @@ import numpy as np
 import soundfile as sf
 from soundgenerator import SoundGenerator
 from auto_encoder import Autoencoder
-from train import SPECTROGRAMS_PATH
-
-HOP_LENGTH = 256
-SAVE_DIR_ORIGINAL = "Sample_data/fma_small/original/"
-SAVE_DIR_GENERATED = "Sample_data/fma_small/generated/"
-MIN_MAX_VALUES_PATH = "Sample_data/fma_small/min_max_values.pkl"
 
 
 def load_audio(spectrograms_path):

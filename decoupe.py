@@ -6,6 +6,10 @@ from pydub.silence import split_on_silence
 
 
 def find_chunks(file, minimum_silence_gap, silence_bar):
+    """
+    Permet de trouver les différents chunks où les oiseaux chantes
+    """
+
     # Load your audio.
     song = AudioSegment.from_mp3(file)
 
@@ -23,6 +27,9 @@ def find_chunks(file, minimum_silence_gap, silence_bar):
     return chunks
 
 def reconstruct_chunks(chunks,exporting_dir,name,padding = 300):
+    """
+    Permet de reconstruire les différents chunks 
+    """
     
     # Define a function to normalize a chunk to a target amplitude.
     def match_target_amplitude(aChunk, target_dBFS):
