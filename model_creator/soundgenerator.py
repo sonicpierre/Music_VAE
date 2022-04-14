@@ -1,6 +1,5 @@
 import librosa
-from preprocess import MinMaxNormaliser
-
+from model_creator.preprocess import MinMaxNormaliser
 
 class SoundGenerator:
     def __init__(self, autoencoder, hop_length):

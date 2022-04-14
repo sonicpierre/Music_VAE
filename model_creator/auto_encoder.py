@@ -3,7 +3,7 @@ import os
 import pickle
 import tensorflow as tf
 from tensorflow.keras import Model
-from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, Dense, Reshape, Conv2DTranspose, Activation, LeakyReLU
+from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, Dense, Reshape, Conv2DTranspose, Activation, LeakyReLU, Dropout
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam
 
@@ -30,7 +30,7 @@ class Autoencoder:
         #The size of the latent space
         self.latent_space_dim = latent_space_dim # 256
         #Weight given to the reconstruction loss
-        self.reconstruction_loss_weight = 5000000
+        self.reconstruction_loss_weight = 1000000
 
         #Encoder model part
         self.encoder = None
@@ -166,8 +166,15 @@ class Autoencoder:
         return Input(shape=self.latent_space_dim, name="decoder_input")
 
     def _add_dense_layer(self, decoder_input):
+        """
+        Te different blocs to decompress the botleneck
+        """
+
         num_neurons = np.prod(self._shape_before_bottleneck) # [1, 2, 4] -> 8
-        dense_layer = Dense(self.latent_space_dim * 4, name="decoder_dense_1", activation= 'relu')(decoder_input)
+        dense_layer = Dense(self.latent_space_dim * 2, name="decoder_dense_1", activation= 'relu')(decoder_input)
+        dense_layer = Dropout(0.3)(dense_layer)
+        dense_layer = Dense(self.latent_space_dim * 4, name="decoder_dense_2", activation= 'relu')(dense_layer)
+        dense_layer = Dropout(0.3)(dense_layer)
         dense_layer = Dense(num_neurons, name="decoder_dense_2", activation = 'relu')(dense_layer)
         return dense_layer
     
@@ -254,6 +261,9 @@ class Autoencoder:
         self._shape_before_bottleneck = K.int_shape(x)[1:] # [7, 7, 32]
         x = Flatten()(x)
         x = Dense(self.latent_space_dim * 4, name = "first_reduction", activation="relu")(x)
+        x = Dropout(0.3)(x)
+        x = Dense(self.latent_space_dim * 2, name = "second_reduction", activation="relu")(x)
+        x = Dropout(0.3)(x)
         self.mu = Dense(self.latent_space_dim, name="mu")(x)
         self.log_variance = Dense(self.latent_space_dim, name="log_variance")(x)
 

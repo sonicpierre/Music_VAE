@@ -2,15 +2,8 @@ import os
 import pickle
 import numpy as np
 import soundfile as sf
-
-from soundgenerator import SoundGenerator
-from auto_encoder import Autoencoder
-from train import SPECTROGRAMS_PATH
-
-HOP_LENGTH = 512
-SAVE_DIR_ORIGINAL = "Sample_data/fma_small/original/"
-SAVE_DIR_GENERATED = "Sample_data/fma_small/generated/"
-MIN_MAX_VALUES_PATH = "Sample_data/fma_small/min_max_values.pkl"
+from model_creator.soundgenerator import SoundGenerator
+from model_creator.auto_encoder import Autoencoder
 
 
 def load_audio(spectrograms_path):
@@ -57,6 +50,8 @@ if __name__ == "__main__":
     specs, file_paths = load_audio(SPECTROGRAMS_PATH)
 
     sampled_specs, sampled_min_max_values = select_spectrograms(specs, file_paths, min_max_values, 5)
+    signals, _ = sound_generator.generate(sampled_specs, sampled_min_max_values)
     orignal_signals = sound_generator.convert_spectrograms_to_audio(sampled_specs, sampled_min_max_values)
 
+    save_signals(signals, SAVE_DIR_GENERATED)
     save_signals(orignal_signals, SAVE_DIR_ORIGINAL)
