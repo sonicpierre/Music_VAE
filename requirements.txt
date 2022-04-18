@@ -2,3 +2,4 @@ tensorflow==2.3.1
 kaggle
 mutagen
 "ray[serve]"
+"ray[tune]"
