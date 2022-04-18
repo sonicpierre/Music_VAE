@@ -2,19 +2,24 @@ import numpy as np
 import os
 import soundfile as sf
 import pickle
+from model_creator.config import HOP_LENGTH
 from model_creator.soundgenerator import SoundGenerator
 from model_creator.auto_encoder import Autoencoder
 
 class Test:
     
-    def __init__(self, spectrograms_path, original_save, generated_save, model_dir):
+    def __init__(self, spectrograms_path, min_max_path, original_save, generated_save, model_dir):
         self.spectrograms_path = spectrograms_path
         self.original_save = original_save
         self.generated_save = generated_save
+        self.min_max_path = min_max_path
         self.autoencoder = Autoencoder.load(model_dir)
         self.sound_generator = SoundGenerator(self.autoencoder, HOP_LENGTH)
 
     def load_audio(self):
+        """
+        Load audio from the path of the spectrograms
+        """
         x_train = []
         file_paths = []
         for root, _, file_names in os.walk(self.spectrograms_path):
@@ -28,10 +33,16 @@ class Test:
         return x_train, file_paths
 
 
-    def select_spectrograms(self, spectrograms,
-                            file_paths,
-                            min_max_values,
-                            num_spectrograms=2):
+    def select_spectrograms(self, spectrograms,file_paths,min_max_values,num_spectrograms=2):
+        
+        """
+        Select randomly a number of sound to decompose and reconstruct
+
+        spectrograms: 2D array wich represent the spectrogram
+        file_paths: The path of the sound
+        min_max_values: The differents minimum and maximum values for scaling
+        num_spectrograms: The number of sounds you want to test reconstruction
+        """
         
         sampled_indexes = np.random.choice(range(len(spectrograms)), num_spectrograms)
         sampled_spectrogrmas = spectrograms[sampled_indexes]
@@ -53,7 +64,7 @@ class Test:
 
     def test_reconstruction(self):
 
-        with open(MIN_MAX_VALUES_PATH, "rb") as f:
+        with open(self.min_max_path, "rb") as f:
             min_max_values = pickle.load(f)
 
         specs, file_paths = self.load_audio()

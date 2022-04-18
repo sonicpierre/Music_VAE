@@ -127,6 +127,7 @@ class Autoencoder:
     def _save_weights(self, save_folder):
         save_path = os.path.join(save_folder, "weights.h5")
         self.model.save_weights(save_path)
+        self.model.save(save_path)
 
     def _build(self):
         self._build_encoder()
