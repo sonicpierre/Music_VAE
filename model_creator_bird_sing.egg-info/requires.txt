@@ -1,3 +1,4 @@
+librosa
 mutagen
 pydub
 ray

@@ -1,0 +1,16 @@
+README.md
+setup.cfg
+setup.py
+model_creator/__init__.py
+model_creator/auto_encoder.py
+model_creator/config.py
+model_creator/decoupe.py
+model_creator/generate.py
+model_creator/preprocess.py
+model_creator/soundgenerator.py
+model_creator/test.py
+model_creator_bird_sing.egg-info/PKG-INFO
+model_creator_bird_sing.egg-info/SOURCES.txt
+model_creator_bird_sing.egg-info/dependency_links.txt
+model_creator_bird_sing.egg-info/requires.txt
+model_creator_bird_sing.egg-info/top_level.txt
