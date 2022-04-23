@@ -1,5 +1,7 @@
 /Sample_data
 /dist
+/data
+/preprocessed_data
 /.ipynb_checkpoints
 setup.*
 /model_creator_bird_sing.egg-info

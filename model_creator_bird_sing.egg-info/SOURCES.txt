@@ -14,3 +14,4 @@ model_creator_bird_sing.egg-info/SOURCES.txt
 model_creator_bird_sing.egg-info/dependency_links.txt
 model_creator_bird_sing.egg-info/requires.txt
 model_creator_bird_sing.egg-info/top_level.txt
+test/test_model_creation.py
