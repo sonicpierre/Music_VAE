@@ -1,5 +1,0 @@
-librosa
-mutagen
-pydub
-ray
-tensorflow==2.3.1

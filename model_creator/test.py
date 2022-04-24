@@ -2,7 +2,7 @@ import numpy as np
 import os
 import soundfile as sf
 import pickle
-from model_creator.config import HOP_LENGTH
+from model_creator.config_default import HOP_LENGTH
 from model_creator.soundgenerator import SoundGenerator
 from model_creator.auto_encoder import Autoencoder
 
