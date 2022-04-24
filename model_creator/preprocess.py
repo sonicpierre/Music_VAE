@@ -148,14 +148,17 @@ class PreprocessingPipeline:
                 print(f"Processed file {file_path}")
         self.saver.save_min_max_values(self.min_max_values)
 
-    def _process_file(self, file_path):
+    def _process_file(self, file_path, write_file = True):
         signal = self.loader.load(file_path)
         if self._is_padding_necessary(signal):
             signal = self._apply_padding(signal)
         feature = self.extractor.extract(signal)
         norm_feature = self.normaliser.normalise(feature)
-        save_path = self.saver.save_feature(norm_feature, file_path)
-        self._store_min_max_value(save_path, feature.min(), feature.max())
+        if write_file:
+            save_path = self.saver.save_feature(norm_feature, file_path)
+            self._store_min_max_value(save_path, feature.min(), feature.max())
+        else:
+            return norm_feature
 
     def _is_padding_necessary(self, signal):
         if len(signal) < self._num_expected_samples:

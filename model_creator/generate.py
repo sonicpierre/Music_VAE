@@ -38,20 +38,3 @@ def save_signals(signals, save_dir, sample_rate=22050):
     for i, signal in enumerate(signals):
         save_path = os.path.join(save_dir, str(i) + ".wav")
         sf.write(save_path, signal, sample_rate)
-
-
-if __name__ == "__main__":
-    autoencoder = Autoencoder.load("model")
-    sound_generator = SoundGenerator(autoencoder, HOP_LENGTH)
-
-    with open(MIN_MAX_VALUES_PATH, "rb") as f:
-        min_max_values = pickle.load(f)
-
-    specs, file_paths = load_audio(SPECTROGRAMS_PATH)
-
-    sampled_specs, sampled_min_max_values = select_spectrograms(specs, file_paths, min_max_values, 5)
-    signals, _ = sound_generator.generate(sampled_specs, sampled_min_max_values)
-    orignal_signals = sound_generator.convert_spectrograms_to_audio(sampled_specs, sampled_min_max_values)
-
-    save_signals(signals, SAVE_DIR_GENERATED)
-    save_signals(orignal_signals, SAVE_DIR_ORIGINAL)

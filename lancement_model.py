@@ -2,7 +2,6 @@ import numpy as np
 import os
 from tqdm import tqdm
 import pandas as pd
-import numpy as np
 import config
 from mutagen.wave import WAVE
 
@@ -148,7 +147,7 @@ if __name__ == "__main__":
     taille_input = np.load("./preprocessed_data/"+ espece[0] +"/spectrograms/" + spec[0]).shape
     x_train = load_music(espece)
     autoencoder, history = train(x_train, 
-                                config.model_param['learning_rate'], 
-                                config.model_param['batch_size'], 
-                                config.model_param['epochs'])
+                                config.MODEL_PARAM['learning_rate'], 
+                                config.MODEL_PARAM['batch_size'], 
+                                config.MODEL_PARAM['epochs'])
     autoencoder.save("model")

@@ -277,19 +277,3 @@ class Autoencoder:
 
         x = tf.keras.layers.Lambda(sample_point_from_normal_distribution, name="encoder_output")([self.mu, self.log_variance])
         return x
-
-
-
-
-'''
-if __name__ == "__main__":
-    autoencoder = Autoencoder(
-        input_shape=(28, 28, 1),
-        conv_filters=(32, 64, 64, 64),
-        conv_kernels=(3, 3, 3, 3),
-        conv_strides=(1, 2, 2, 1),
-        latent_space_dim=2
-    )
-    autoencoder.summary()
-
-'''
