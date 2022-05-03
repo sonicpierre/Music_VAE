@@ -4,8 +4,12 @@ import pickle
 import tensorflow as tf
 from tensorflow.keras import Model
 from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, Dense, Reshape, Conv2DTranspose, Activation, LeakyReLU, Dropout
+from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam
+from torch import float32
+
+from model_creator.config_default import LOG_DIR
 
 tf.compat.v1.disable_eager_execution()
 
@@ -14,7 +18,7 @@ class Autoencoder:
     Deep Convolutionnal autoencoder with mirrored encoder and decoder components
     """
 
-    def __init__(self, input_shape, conv_filters, conv_kernels, conv_strides, latent_space_dim):
+    def __init__(self, input_shape, conv_filters, conv_kernels, conv_strides, latent_space_dim, save_path = 'model'):
         """
         Initialisation of the class with the different parameters
         """
@@ -31,6 +35,8 @@ class Autoencoder:
         self.latent_space_dim = latent_space_dim # 256
         #Weight given to the reconstruction loss
         self.reconstruction_loss_weight = 1000000
+        #The save path
+        self.save_path = save_path
 
         #Encoder model part
         self.encoder = None
@@ -56,13 +62,22 @@ class Autoencoder:
     def compile(self, learning_rate):
         """Compile the model"""
         optimizer = Adam(learning_rate  = learning_rate)
+
         self.model.compile(optimizer = optimizer,
                         loss = self._calculate_combined_loss, 
                         metrics = [self._calculate_reconstruction_loss, self._calculate_kl_loss])
     
-    def train(self, x_train, batch_size, num_epochs):
+    def train(self, x_train, batch_size, num_epochs, patience = 10):
         """Train the model"""
-        history = self.model.fit(x_train, x_train, batch_size=batch_size, epochs=num_epochs,shuffle=True)
+        early_stopping = EarlyStopping(monitor='loss', patience=patience, restore_best_weights=True)
+        tensorboard_callback = TensorBoard(LOG_DIR, histogram_freq=1)
+
+        history = self.model.fit(x_train,
+                                x_train,
+                                batch_size=batch_size,
+                                epochs=num_epochs,
+                                callbacks = [early_stopping, tensorboard_callback],
+                                shuffle=True)
         return history
     
     def save(self, save_folder="."):
@@ -83,7 +98,7 @@ class Autoencoder:
         parameters_path = os.path.join(save_folder, "parameters.pkl")
         with open(parameters_path, "rb") as f:
             parameters = pickle.load(f)
-        
+
         autoencoder = Autoencoder(*parameters)
         weights_path = os.path.join(save_folder, "weights.h5")
         autoencoder.load_weights(weights_path)
@@ -131,7 +146,6 @@ class Autoencoder:
     def _save_weights(self, save_folder):
         save_path = os.path.join(save_folder, "weights.h5")
         self.model.save_weights(save_path)
-        self.model.save(save_path)
 
     def _build(self):
         self._build_encoder()
@@ -167,8 +181,9 @@ class Autoencoder:
         #Model final composition
         self.decoder = Model(decoder_input, decoder_output, name = 'decoder')
     
+
     def _add_decoder_input(self):
-        return Input(shape=self.latent_space_dim, name="decoder_input")
+        return Input(shape=(self.latent_space_dim,), dtype=tf.float32, name="decoder_input")
 
     def _add_dense_layer(self, decoder_input):
         """

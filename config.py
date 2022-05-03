@@ -12,9 +12,3 @@ SILENCE_BAR = -32
 TOO_SHORT_LENGHT = 1.1
 #Too long sing
 TOO_LONG_LENGHT = 5
-
-MODEL_PARAM = {
-    'learning_rate' : 0.00025,
-    'batch_size' : 12,
-    'epochs' : 20,
-}

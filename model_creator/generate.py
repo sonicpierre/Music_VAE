@@ -1,10 +1,6 @@
 import os
-import pickle
 import numpy as np
 import soundfile as sf
-from model_creator.soundgenerator import SoundGenerator
-from model_creator.auto_encoder import Autoencoder
-
 
 def load_audio(spectrograms_path):
     x_train = []

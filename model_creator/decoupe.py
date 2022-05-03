@@ -39,6 +39,7 @@ def reconstruct_chunks(chunks,exporting_dir,name,padding = 300):
 
     if not os.path.exists(exporting_dir):
         os.makedirs(exporting_dir)
+        
     # Process each chunk with your parameters
     for i, chunk in enumerate(chunks):
         # Create a silence chunk that's 0.5 seconds (or 1000 ms) long for padding.
