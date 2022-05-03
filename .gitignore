@@ -6,3 +6,5 @@
 setup.*
 /model_creator_bird_sing.egg-info/
 /my_dir/
+/__pycache__/
+kaggle.json

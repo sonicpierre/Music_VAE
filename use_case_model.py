@@ -67,8 +67,6 @@ def get_min_max_values(file_name : str, file_min_max : str) -> dict:
 
     return min_max_values[file_name]
 
-
-
 if __name__ == "__main__":
 
     autoencoder, encoder, decoder = recup_model()

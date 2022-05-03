@@ -8,6 +8,7 @@ from model_creator.decoupe import find_chunks, reconstruct_chunks
 from model_creator.preprocess import Loader, Padder, LogSpectrogramExtractor, MinMaxNormaliser, Saver, PreprocessingPipeline
 from model_creator.train import ClassiqueTrain, CreateData, ParameterTuning
 from model_creator import config_default
+from model_creator.get_data import Data_Recup
 
 def chargement_espece(metadata : pd.DataFrame, nb_espece = None) -> list:
     """
@@ -102,18 +103,21 @@ def creation_spectrogram(espece : str) -> None:
 
 if __name__ == "__main__":
 
-    meta_df = pd.read_csv(config.LIEN_METADATA)
-    espece = chargement_espece(meta_df, config.NB_ESPECE)
+    data_getter = Data_Recup("~/kaggle.json")
+    data_getter.get_songs()
+
+    #meta_df = pd.read_csv(config.LIEN_METADATA)
+    #espece = chargement_espece(meta_df, config.NB_ESPECE)
     #decoupe_son(espece, meta_df)
     #num_supp = sup_enregistrement_court(espece)
     #creation_spectrogram(espece)
-    spec = os.listdir("./preprocessed_data/"+ espece[0] +"/spectrograms")
-    taille_input = np.load("./preprocessed_data/"+ espece[0] +"/spectrograms/" + spec[0]).shape
+    #spec = os.listdir("./preprocessed_data/"+ espece[0] +"/spectrograms")
+    #taille_input = np.load("./preprocessed_data/"+ espece[0] +"/spectrograms/" + spec[0]).shape
 
-    x_train = CreateData(espece).load_music()
+    #x_train = CreateData(espece).load_music()
     '''
     bird_singer = ClassiqueTrain(taille_input)
     bird_singer.fit_classique(x_train)
     bird_singer.autoencoder.save("model")
     '''
-    ParameterTuning(taille_input).tune(x_train)
+    #ParameterTuning(taille_input).tune(x_train)
