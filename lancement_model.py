@@ -8,7 +8,7 @@ from model_creator.decoupe import find_chunks, reconstruct_chunks
 from model_creator.preprocess import Loader, Padder, LogSpectrogramExtractor, MinMaxNormaliser, Saver, PreprocessingPipeline
 from model_creator.train import ClassiqueTrain, CreateData, ParameterTuning
 from model_creator import config_default
-from model_creator.get_data import Data_Recup
+from model_creator.preprocess import Data_Recup
 
 def chargement_espece(metadata : pd.DataFrame, nb_espece = None) -> list:
     """

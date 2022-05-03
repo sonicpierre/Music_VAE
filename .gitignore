@@ -8,3 +8,4 @@ setup.*
 /my_dir/
 /__pycache__/
 kaggle.json
+/build/
