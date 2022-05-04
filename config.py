@@ -12,3 +12,31 @@ SILENCE_BAR = -32
 TOO_SHORT_LENGHT = 1.1
 #Too long sing
 TOO_LONG_LENGHT = 5
+
+tuning_dico = {
+    'classique':{
+        "conv_filters":(512,256, 128, 64, 32),
+        "conv_kernels":(3,3,3,3,2),
+        "conv_strides":(2,2,2,2, (2,1)),
+    },
+    'reduit_taille':{
+        "conv_filters":(512,256, 128, 64),
+        "conv_kernels":(3,3,3,3),
+        "conv_strides":(2,2,2, (2,1)),
+    },
+    'change_kernel':{
+        "conv_filters":(512,256, 128, 64, 32),
+        "conv_kernels":(2,2,2,2,2),
+        "conv_strides":(2,2,2,2, (2,1)),
+    },
+    'classique_max':{
+        "conv_filters":(1024,512, 256, 128, 64),
+        "conv_kernels":(3,3,3,3,2),
+        "conv_strides":(2,2,2,2, (2,1)),
+    },
+    'reduit_strenght':{
+        "conv_filters":(256,128, 64, 32, 8),
+        "conv_kernels":(3,3,3,3,2),
+        "conv_strides":(2,2,2,2, (2,1)),
+    },
+}

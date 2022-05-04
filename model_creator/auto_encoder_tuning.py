@@ -20,19 +20,15 @@ class Autoencoder_Tuning(kt.HyperModel):
     Deep Convolutionnal autoencoder tuning with mirrored encoder and decoder components
     """
 
-    def __init__(self, input_shape, conv_filters, conv_kernels, conv_strides, save_path):
+    def __init__(self, input_shape, dico_param, save_path):
         """
         Initialisation of the class with the different parameters
         """
-
         #Shape of the input spectrogram
         self.input_shape = input_shape # [1024,256,1]
-        #Shape of the differents convolutials layers
-        self.conv_filters = conv_filters # [2,4,8]
-        #Shape of the kernels
-        self.conv_kernels = conv_kernels # [3,5,3]
-        #The different strides
-        self.conv_strides = conv_strides # [1,2,2]
+
+        #Dictionnaire
+        self.dico_param = dico_param
 
         #The save path
         self.save_path = save_path
@@ -44,7 +40,6 @@ class Autoencoder_Tuning(kt.HyperModel):
         #The entire model encoder + decoder
         self.model = None
 
-        self._num_conv_layers = len(conv_filters)
         self._shape_before_bottleneck = None
         self._model_input = None
 
@@ -99,6 +94,7 @@ class Autoencoder_Tuning(kt.HyperModel):
 
     def build(self, hp):
 
+        self.__archi_choice(hp)
         #The size of the latent space
         self.latent_space_dim = hp.Int("Size_latent _space", min_value=128, max_value=1024, step=128)
         self._build_encoder(hp)
@@ -107,6 +103,22 @@ class Autoencoder_Tuning(kt.HyperModel):
         self.compile(hp.Float("learning_rate_tuning", min_value=0.00005, max_value=0.0002, step=0.00005),hp)
 
         return self.model
+
+    def __archi_choice(self, hp):
+        """
+        Permet de choisir entre differents architectures de modèle de convolution
+        """
+        archi_name = hp.Choice("Choix_architecture", list(self.dico_param.keys()))
+
+        #Shape of the differents convolutials layers
+        self.conv_filters = self.dico_param[archi_name]["conv_filters"]
+        #Shape of the kernels
+        self.conv_kernels = self.dico_param[archi_name]["conv_kernels"]
+        #The different strides
+        self.conv_strides = self.dico_param[archi_name]["conv_strides"]
+
+        self._num_conv_layers = len(self.conv_filters)
+
 
     def _build_autoencoder(self):
         #Input of the model

@@ -62,13 +62,11 @@ class ParameterTuning:
     """
     Allow model hyper-tuning
     """
-    def __init__(self, taille_input : tuple) -> None:
+    def __init__(self, dico_archi : dict, taille_input : tuple) -> None:
         self.taille_input = taille_input
 
         auto_tuner = Autoencoder_Tuning(input_shape=(self.taille_input[0], self.taille_input[1], 1),
-            conv_filters=(512,256, 128, 64, 32),
-            conv_kernels=(3,3,3,3,2),
-            conv_strides=(2,2,2,2, (2,1)),
+            dico_param=dico_archi,
             save_path=conf.MODEL_PATH_CLASSIQUE)
         
         self.tuner = kt.RandomSearch(

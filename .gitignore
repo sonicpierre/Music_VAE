@@ -4,7 +4,7 @@
 /preprocessed_data
 /.ipynb_checkpoints
 setup.*
-/model_creator_bird_sing.egg-info/
+/model_creator_bird_sing_v2.egg-info/
 /my_dir/
 /__pycache__/
 kaggle.json
