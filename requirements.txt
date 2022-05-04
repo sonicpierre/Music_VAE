@@ -3,3 +3,4 @@ tensorboard==2.8.0
 kaggle==1.5.12
 mutagen==1.45.1
 keras-tuner==1.1.2
+wandb==0.12.16

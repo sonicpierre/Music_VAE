@@ -14,7 +14,7 @@ class MyTuner(kt.Tuner):
         model = self.hypermodel.build(hp)
         
         ## Initiates new run for each trial on the dashboard of Weights & Biases
-        run = wandb.init(project="WandBAndKerasTuner", config=hp.values)
+        run = wandb.init(project="Tune Birds Model", config=hp.values)
 
         ## WandbCallback() logs all the metric data such as
         ## loss, accuracy and etc on dashboard for visualization

@@ -1,14 +1,11 @@
 import numpy as np
 import os
-import pickle
 import tensorflow as tf
 import keras_tuner as kt
 from tensorflow.keras import Model
 from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, Dense, Reshape, Conv2DTranspose, Activation, LeakyReLU, Dropout
-from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam
-from model_creator.config_default import LOG_DIR
 
 tf.compat.v1.disable_eager_execution()
 
@@ -55,22 +52,11 @@ class Autoencoder_Tuning(kt.HyperModel):
 
         optimizer = Adam(learning_rate  = learning_rate)
         #Weight given to the reconstruction loss
-        self.reconstruction_loss_weight = hp.Int("loss_weight_tuning", min_value=100000, max_value=2000000, step=100000)
+        self.reconstruction_loss_weight = 1000000
 
         self.model.compile(optimizer = optimizer,
                         loss = self._calculate_combined_loss, 
                         metrics = [self._calculate_reconstruction_loss, self._calculate_kl_loss])
-    '''
-    def fit(self, hp, model, *args, **kwargs):
-        """
-        Fit the model
-        """
-        model.fit(
-                *args,
-                shuffle = True,
-                **kwargs,
-            )
-    '''
 
     def _calculate_combined_loss(self, y_target, y_predicted):
         reconstruction_loss = self._calculate_reconstruction_loss(y_target, y_predicted)
@@ -117,7 +103,7 @@ class Autoencoder_Tuning(kt.HyperModel):
         self.conv_kernels = self.dico_param[archi_name]["conv_kernels"]
         #The different strides
         self.conv_strides = self.dico_param[archi_name]["conv_strides"]
-
+        #Know the 
         self._num_conv_layers = len(self.conv_filters)
 
 
