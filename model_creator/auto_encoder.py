@@ -7,7 +7,6 @@ from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, 
 from tensorflow.keras.callbacks import EarlyStopping, TensorBoard
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam
-from torch import float32
 
 from model_creator.config_default import LOG_DIR
 

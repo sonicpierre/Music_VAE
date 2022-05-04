@@ -9,3 +9,4 @@ setup.*
 /__pycache__/
 kaggle.json
 /build/
+/wandb/

@@ -1,7 +1,7 @@
 import keras_tuner as kt
-import tensorflow as tf
 from model_creator.auto_encoder import Autoencoder
 from model_creator.auto_encoder_tuning import Autoencoder_Tuning
+from model_creator.tuner import MyTuner
 import model_creator.config_default as conf
 import numpy as np
 import os
@@ -69,14 +69,17 @@ class ParameterTuning:
             dico_param=dico_archi,
             save_path=conf.MODEL_PATH_CLASSIQUE)
         
-        self.tuner = kt.RandomSearch(
-            auto_tuner,
-            objective="loss",
-            max_trials=3,
+        self.tuner = MyTuner(
+            oracle = kt.oracles.RandomSearch(
+                objective="loss",
+                max_trials=3,
+            ),
+            hypermodel=auto_tuner,
             overwrite=True,
-            directory="my_dir",
-            project_name="tune_hypermodel",
+            directory="my_dir/",
+            project_name="hyper_tuning"
         )
+
     
     def tune(self, x_train):
-        self.tuner.search(x_train, x_train, epochs=30, callbacks=[tf.keras.callbacks.EarlyStopping('loss', patience=3)])
+        self.tuner.search(x_train,batch_size = conf.DEFAULT_BATCH_SIZE, epochs=50, objective = 'loss')

@@ -8,14 +8,12 @@ from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Flatten, 
 from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam
-from torch import dropout
-from model_creator.config_default import DEFAULT_BATCH_SIZE
-
 from model_creator.config_default import LOG_DIR
 
 tf.compat.v1.disable_eager_execution()
 
 class Autoencoder_Tuning(kt.HyperModel):
+
     """
     Deep Convolutionnal autoencoder tuning with mirrored encoder and decoder components
     """
@@ -62,14 +60,17 @@ class Autoencoder_Tuning(kt.HyperModel):
         self.model.compile(optimizer = optimizer,
                         loss = self._calculate_combined_loss, 
                         metrics = [self._calculate_reconstruction_loss, self._calculate_kl_loss])
-    
+    '''
     def fit(self, hp, model, *args, **kwargs):
+        """
+        Fit the model
+        """
         model.fit(
                 *args,
-                batch_size=DEFAULT_BATCH_SIZE,
                 shuffle = True,
                 **kwargs,
             )
+    '''
 
     def _calculate_combined_loss(self, y_target, y_predicted):
         reconstruction_loss = self._calculate_reconstruction_loss(y_target, y_predicted)
