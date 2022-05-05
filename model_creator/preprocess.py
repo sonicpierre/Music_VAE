@@ -166,6 +166,15 @@ class PreprocessingPipeline:
                 print(f"Processed file {file_path}")
         self.saver.save_min_max_values(self.min_max_values)
 
+    def process_applicatif(self, audio_files_dir):
+        spectrograms = []
+        for root, _, files in os.walk(audio_files_dir):
+            for file in files:
+                file_path = os.path.join(root, file)
+                spectrograms.append(self._process_file(file_path, write_file=False))
+                print(f"Processed file {file_path}")
+        return np.array(spectrograms)
+
     def _process_file(self, file_path, write_file = True):
         signal = self.loader.load(file_path)
         if self._is_padding_necessary(signal):
