@@ -120,4 +120,7 @@ if __name__ == "__main__":
     bird_singer.fit_classique(x_train)
     bird_singer.autoencoder.save("model")
     '''
-    ParameterTuning(config.tuning_dico, taille_input).tune(x_train)
+    
+    param_tuner = ParameterTuning(config.tuning_dico, taille_input)
+    param_tuner.logwandb("W&B.txt")
+    param_tuner.tune(x_train)

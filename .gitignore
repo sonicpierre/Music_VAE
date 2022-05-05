@@ -8,5 +8,6 @@ setup.*
 /my_dir/
 /__pycache__/
 kaggle.json
+W&B.txt
 /build/
 /wandb/
