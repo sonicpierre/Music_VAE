@@ -17,5 +17,6 @@ DEFAULT_PATIENCE = 10
 
 MODEL_PATH = "./model/"
 MODEL_PATH_CLASSIQUE = "./model/classique_model.h5"
+DEFAULT_MODEL_TUNING_TRIAL = 50
 
 LOG_DIR = "logs/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")

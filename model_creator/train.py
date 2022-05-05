@@ -1,6 +1,7 @@
 import keras_tuner as kt
 from model_creator.auto_encoder import Autoencoder
 from model_creator.auto_encoder_tuning import Autoencoder_Tuning
+import wandb
 from model_creator.tuner import MyTuner
 import model_creator.config_default as conf
 import numpy as np
@@ -72,7 +73,7 @@ class ParameterTuning:
         self.tuner = MyTuner(
             oracle = kt.oracles.RandomSearch(
                 objective="loss",
-                max_trials=3,
+                max_trials=conf.DEFAULT_MODEL_TUNING_TRIAL,
             ),
             hypermodel=auto_tuner,
             overwrite=True,
@@ -80,6 +81,10 @@ class ParameterTuning:
             project_name="hyper_tuning"
         )
 
-    
+    def logwandb(self, file_path:str):
+        with open(file_path, 'r') as f:
+            key = f.readline()
+        os.environ["WANDB_API_KEY"] = key
+
     def tune(self, x_train):
         self.tuner.search(x_train,batch_size = conf.DEFAULT_BATCH_SIZE, epochs=50, objective = 'loss')

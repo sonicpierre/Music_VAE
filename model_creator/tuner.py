@@ -4,6 +4,9 @@ import wandb
 from wandb.keras import WandbCallback
 
 class MyTuner(kt.Tuner):
+    """
+    Allow you to tune hyperparameters
+    """
 
     def run_trial(self, trial, trainX, batch_size, epochs, objective):
 
