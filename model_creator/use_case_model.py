@@ -4,7 +4,7 @@ import os
 
 class Use_Case_Model:
     """
-    Permet la construction des espaces latents moyens
+    Permet la construction des espaces latents moyens pour la génération de sons
     """
     
     def __init__(self, path_saved = './model'):
