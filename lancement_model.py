@@ -1,4 +1,3 @@
-from ast import arg
 import numpy as np
 import argparse
 import os
@@ -126,15 +125,15 @@ if __name__ == "__main__":
         decoupe_son(espece, meta_df)
         num_supp = sup_enregistrement_court(espece)
         creation_spectrogram(espece)
-        spec = os.listdir("./preprocessed_data/"+ espece[0] +"/spectrograms")
-        taille_input = np.load("./preprocessed_data/"+ espece[0] +"/spectrograms/" + spec[0]).shape
-
+    
+    spec = os.listdir("./preprocessed_data/"+ espece[0] +"/spectrograms")
+    taille_input = np.load("./preprocessed_data/"+ espece[0] +"/spectrograms/" + spec[0]).shape
     x_train = CreateData(espece).load_music()
 
     if args.tuning or args.total or (args.debug == 2):
-        param_tuner = ParameterTuning(config.tuning_dico, taille_input)
+        param_tuner = ParameterTuning(config.tuning_dico, taille_input, nb_trial=config.TRIAL)
         param_tuner.logwandb("W&B.txt")
-        param_tuner.tune(x_train)
+        param_tuner.tune(x_train, batch_size=config.BATCH_SIZE, epochs=config.EPOCH)
     
     else:
         bird_singer = ClassiqueTrain(taille_input)

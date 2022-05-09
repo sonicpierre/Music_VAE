@@ -1,6 +1,4 @@
 from model_creator.auto_encoder import Autoencoder
-from model_creator.soundgenerator import SoundGenerator
-from model_creator.config_default import HOP_LENGTH
 import numpy as np
 import os
 
@@ -47,6 +45,7 @@ class Use_Case_Model:
         pred = np.array(pred)
 
         return np.array([np.mean(pred, axis=0), np.var(pred, axis=0)])
+
 
     def construction_utils(self, espece : list) -> None:
         """

@@ -1,6 +1,17 @@
+from calendar import EPOCH
+
+
 LIEN_METADATA = "data/metadata.csv"
 LIEN_DIR_MP3 = "data/mp3/"
+
+
 NB_ESPECE = 1
+
+#Paramètre modèle
+BATCH_SIZE = 3
+EPOCH = 30
+TRIAL = 25
+
 
 #Parametre pour la découpe
 

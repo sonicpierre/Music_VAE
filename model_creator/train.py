@@ -1,7 +1,6 @@
 import keras_tuner as kt
 from model_creator.auto_encoder import Autoencoder
 from model_creator.auto_encoder_tuning import Autoencoder_Tuning
-import wandb
 from model_creator.tuner import MyTuner
 import model_creator.config_default as conf
 import numpy as np
@@ -63,7 +62,7 @@ class ParameterTuning:
     """
     Allow model hyper-tuning
     """
-    def __init__(self, dico_archi : dict, taille_input : tuple) -> None:
+    def __init__(self, dico_archi : dict, taille_input : tuple, nb_trial=conf.DEFAULT_MODEL_TUNING_TRIAL) -> None:
         self.taille_input = taille_input
 
         auto_tuner = Autoencoder_Tuning(input_shape=(self.taille_input[0], self.taille_input[1], 1),
@@ -73,7 +72,7 @@ class ParameterTuning:
         self.tuner = MyTuner(
             oracle = kt.oracles.RandomSearch(
                 objective="loss",
-                max_trials=conf.DEFAULT_MODEL_TUNING_TRIAL,
+                max_trials=nb_trial,
             ),
             hypermodel=auto_tuner,
             overwrite=True,
@@ -86,5 +85,5 @@ class ParameterTuning:
             key = f.readline()
         os.environ["WANDB_API_KEY"] = key
 
-    def tune(self, x_train):
-        self.tuner.search(x_train,batch_size = conf.DEFAULT_BATCH_SIZE, epochs=50, objective = 'loss')
+    def tune(self, x_train, batch_size : int, epochs : int):
+        self.tuner.search(x_train,batch_size = batch_size, epochs=epochs, objective = 'loss')
