@@ -3,6 +3,7 @@ from model_creator.auto_encoder import Autoencoder
 from model_creator.auto_encoder_tuning import Autoencoder_Tuning
 from model_creator.tuner import MyTuner
 import model_creator.config_default as conf
+import tensorflow as tf
 import numpy as np
 import os
 
@@ -74,6 +75,7 @@ class ParameterTuning:
                 objective="loss",
                 max_trials=nb_trial,
             ),
+            distribution_strategy=tf.distribute.MirroredStrategy(),
             hypermodel=auto_tuner,
             overwrite=True,
             directory="my_dir/",
