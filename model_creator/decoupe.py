@@ -5,7 +5,7 @@ from pydub import AudioSegment
 from pydub.silence import split_on_silence
 
 
-def find_chunks(file, minimum_silence_gap, silence_bar):
+def find_chunks(file, minimum_silence_gap:int, silence_bar:int) -> list:
     """
     Permet de trouver les différents chunks où les oiseaux chantes
     """

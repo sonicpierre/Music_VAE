@@ -9,7 +9,7 @@ NB_ESPECE = 1
 
 #Paramètre modèle
 BATCH_SIZE = 3
-EPOCH = 30
+EPOCH = 1
 TRIAL = 25
 
 

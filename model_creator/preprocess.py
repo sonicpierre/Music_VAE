@@ -20,7 +20,10 @@ class Data_Recup:
     def __init__(self, file_key_path : str):
         self.file_key_path = file_key_path
 
-    def get_songs(self):
+    def get_songs(self) -> None:
+        """
+        Download the birds songs
+        """
 
         os.system('mkdir ~/.kaggle')
         os.system('cp ' + self.file_key_path + ' ~/.kaggle/')
@@ -33,7 +36,7 @@ class Data_Recup:
 class Loader:
     """Loader is responsible for loading an audio file."""
 
-    def __init__(self, sample_rate, duration, mono):
+    def __init__(self, sample_rate:int, duration:int, mono):
         self.sample_rate = sample_rate
         self.duration = duration
         self.mono = mono
@@ -70,7 +73,7 @@ class LogSpectrogramExtractor:
     time-series signal.
     """
 
-    def __init__(self, frame_size, hop_length):
+    def __init__(self, frame_size:int, hop_length:int):
         self.frame_size = frame_size
         self.hop_length = hop_length
 

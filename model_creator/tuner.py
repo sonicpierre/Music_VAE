@@ -17,7 +17,7 @@ class MyTuner(kt.Tuner):
         model = self.hypermodel.build(hp)
         
         ## Initiates new run for each trial on the dashboard of Weights & Biases
-        run = wandb.init(project="Tune Birds Model", config=hp.values)
+        run = wandb.init(project="Birds Model Tune", config=hp.values)
 
         ## WandbCallback() logs all the metric data such as
         ## loss, accuracy and etc on dashboard for visualization
@@ -32,9 +32,6 @@ class MyTuner(kt.Tuner):
 
         ## Send the objective data to the oracle for comparison of hyperparameters
         self.oracle.update_trial(trial.trial_id, {objective_name_str:loss})
-
-        ## save the trial model
-        self.save_model(trial.trial_id, model)
         
         ## ends the run on the Weights & Biases dashboard
         run.finish()

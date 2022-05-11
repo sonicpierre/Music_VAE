@@ -26,10 +26,10 @@ class CreateData:
                     spectrogram = np.load(file_path) # (n_bins, n_frames)
                     x_train.append(spectrogram)
 
-            x_train = np.array(x_train)
-            x_train = x_train[..., np.newaxis]
-            np.random.shuffle(x_train)
-            x_train = x_train
+        x_train = np.array(x_train)
+        x_train = x_train[..., np.newaxis]
+        np.random.shuffle(x_train)
+        x_train = x_train
         
         return x_train
 
@@ -82,10 +82,10 @@ class ParameterTuning:
             project_name="hyper_tuning"
         )
 
-    def logwandb(self, file_path:str):
+    def logwandb(self, file_path:str) -> None:
         with open(file_path, 'r') as f:
             key = f.readline()
         os.environ["WANDB_API_KEY"] = key
 
-    def tune(self, x_train, batch_size : int, epochs : int):
+    def tune(self, x_train, batch_size : int, epochs : int) -> None:
         self.tuner.search(x_train,batch_size = batch_size, epochs=epochs, objective = 'loss')
