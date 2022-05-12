@@ -137,7 +137,7 @@ if __name__ == "__main__":
     
     else:
         bird_singer = ClassiqueTrain(taille_input)
-        bird_singer.fit_classique(x_train)
+        bird_singer.fit_classique(x_train, batch_size=config.BATCH_SIZE, epochs=config.EPOCH)
         bird_singer.autoencoder.save("model")
         use_case = Use_Case_Model('model')
         use_case.construction_utils(espece)

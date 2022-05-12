@@ -8,8 +8,8 @@ LIEN_DIR_MP3 = "data/mp3/"
 NB_ESPECE = 1
 
 #Paramètre modèle
-BATCH_SIZE = 3
-EPOCH = 1
+BATCH_SIZE = 8
+EPOCH = 150
 TRIAL = 25
 
 

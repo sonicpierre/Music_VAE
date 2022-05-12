@@ -44,18 +44,18 @@ class ClassiqueTrain:
 
         self.autoencoder = Autoencoder(
             input_shape=(self.taille_input[0], self.taille_input[1], 1),
-            conv_filters=(512,256, 128, 64, 32),
+            conv_filters=(1024,512, 256, 128, 64),
             conv_kernels=(3,3,3,3,2),
             conv_strides=(2,2,2,2, (2,1)),
             latent_space_dim=256,
             save_path=conf.MODEL_PATH_CLASSIQUE
         )
 
-    def fit_classique(self, x_train : np.array):
+    def fit_classique(self, x_train : np.array, batch_size = conf.DEFAULT_BATCH_SIZE, epochs = conf.DEFAULT_EPOCHS):
 
         self.autoencoder.summary()
         self.autoencoder.compile(conf.DEFAULT_LEARNING_RATE)
-        history = self.autoencoder.train(x_train, conf.DEFAULT_BATCH_SIZE,  conf.DEFAULT_EPOCHS)
+        history = self.autoencoder.train(x_train, batch_size, epochs)
         
         return self.autoencoder, history
 

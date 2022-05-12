@@ -191,9 +191,7 @@ class Autoencoder:
 
         num_neurons = np.prod(self._shape_before_bottleneck) # [1, 2, 4] -> 8
         dense_layer = Dense(self.latent_space_dim * 2, name="decoder_dense_1", activation= 'relu')(decoder_input)
-        dense_layer = Dropout(0.3)(dense_layer)
         dense_layer = Dense(self.latent_space_dim * 4, name="decoder_dense_2", activation= 'relu')(dense_layer)
-        dense_layer = Dropout(0.3)(dense_layer)
         dense_layer = Dense(num_neurons, name="decoder_dense_3", activation = 'relu')(dense_layer)
         return dense_layer
     
