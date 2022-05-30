@@ -12,7 +12,8 @@ different achitectures to find the best model.
 
 The final model has the following architecture :
 
-
+![alt text](readme_image/encoder.png)
+![alt text](readme_image/decoder.png)
 
 ## How to use the model with the library
 
