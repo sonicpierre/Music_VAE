@@ -10,12 +10,19 @@ different achitectures to find the best model.
 
 ## The model
 
+The final model has the following architecture :
 
 
-## How to use the model
+
+## How to use the model with the library
+
+In order to use our work we have built the following library with an architecture that includes data preprocessing and 
+model training.
+
+![alt text](readme_image/Architecture_librairie.drawio.png)
 
 This work is made to be test and used again by professionals of birds. You can install this part of the work on Pypi :
 
-pip install model-creator-bird-sing-v2
+**pip install model-creator-bird-sing-v2**
 
-
+It is strongly recommended to run the training on machines with GPUs, otherwise the training can take an extremely long time, especially when tuning the model.
